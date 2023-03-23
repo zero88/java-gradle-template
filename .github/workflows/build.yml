@@ -24,10 +24,12 @@ env:
   JAVA_DIST: 'temurin'
   PROFILE: 'code'
   REPO: 'zero88/beanx'
+  SHARED_WF_REPO: zero88/shared-ghactions
+  SHARED_WF_BRANCH: main
 
 jobs:
   context:
-    uses: ./.github/workflows/subwf-context.yml
+    uses: ${{ env.SHARED_WF_REPO }}/.github/workflows/project-context.yml@${{ env.SHARED_WF_BRANCH }}
     with:
       profile: ${{ env.PROFILE }}
     secrets:
@@ -38,7 +40,7 @@ jobs:
   build:
     needs: context
     if: needs.context.outputs.shouldBuild == 'true'
-    uses: ./.github/workflows/subwf-build.yml
+    uses: ${{ env.SHARED_WF_REPO }}/.github/workflows/gradle-build.yml@${{ env.SHARED_WF_BRANCH }}
     with:
       profile: 'ciBuild'
       version: ${{ needs.context.outputs.version }}
@@ -48,7 +50,7 @@ jobs:
   analysis:
     needs: [ context, build ]
     if: needs.context.outputs.shouldBuild == 'true'
-    uses: ./.github/workflows/subwf-build.yml
+    uses: ${{ env.SHARED_WF_REPO }}/.github/workflows/gradle-build.yml@${{ env.SHARED_WF_BRANCH }}
     with:
       profile: 'ciBuild'
       version: ${{ needs.context.outputs.version }}
@@ -59,12 +61,12 @@ jobs:
     runs-on: ubuntu-latest
     needs: [ context, build ]
     if: needs.context.outputs.shouldPublish == 'true' || needs.context.outputs.isRelease == 'true'
-    uses: ./.github/workflows/subwf-build.yml
+    uses: ${{ env.SHARED_WF_REPO }}/.github/workflows/antora-docs-async.yml@${{ env.SHARED_WF_BRANCH }}
 
   publish:
     needs: [ context, build, analysis ]
     if: needs.context.outputs.shouldPublish == 'true' || needs.context.outputs.isRelease == 'true'
-    uses: ./.github/workflows/subwf-publish.yml
+    uses: ${{ env.SHARED_WF_REPO }}/.github/workflows/gradle-publish.yml@${{ env.SHARED_WF_BRANCH }}
     with:
       profile: ${{ env.PROFILE }}
       version: ${{ needs.context.outputs.version }}
