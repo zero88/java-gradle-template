@@ -21,9 +21,8 @@ on:
       - 'webdocs/**'
 
 env:
-  JAVA_DIST: 'temurin'
+  REPO: 'zero88/java-gradle-template'
   PROFILE: 'code'
-  REPO: 'zero88/beanx'
   SHARED_WF_REPO: zero88/shared-ghactions
   SHARED_WF_BRANCH: main
 
@@ -50,18 +49,30 @@ jobs:
   analysis:
     needs: [ context, build ]
     if: needs.context.outputs.shouldBuild == 'true'
-    uses: ${{ env.SHARED_WF_REPO }}/.github/workflows/gradle-build.yml@${{ env.SHARED_WF_BRANCH }}
+    uses: ${{ env.SHARED_WF_REPO }}/.github/workflows/gradle-analysis.yml@${{ env.SHARED_WF_BRANCH }}
     with:
-      profile: 'ciBuild'
-      version: ${{ needs.context.outputs.version }}
+      profile: 'ciSonar'
       semanticVersion: ${{ needs.context.outputs.semanticVersion }}
-      hashVersion: ${{ needs.context.outputs.commitId }}
+      branch: ${{ needs.context.outputs.branch }}
+    secrets:
+      githubToken: ${{ secrets.OSS_GITHUB_TOKEN }}
+      sonarToken: ${{ secrets.OSS_SONARQUBE_TOKEN }}
 
   docs:
     runs-on: ubuntu-latest
     needs: [ context, build ]
     if: needs.context.outputs.shouldPublish == 'true' || needs.context.outputs.isRelease == 'true'
     uses: ${{ env.SHARED_WF_REPO }}/.github/workflows/antora-docs-async.yml@${{ env.SHARED_WF_BRANCH }}
+    with:
+      profile: ${{ env.PROFILE }}
+      version: ${{ needs.context.outputs.version }}
+      semanticVersion: ${{ needs.context.outputs.semanticVersion }}
+      hashVersion: ${{ needs.context.outputs.commitId }}
+      sha: ${{ needs.context.outputs.sha }}
+      isRelease: ${{ needs.context.outputs.isRelease }}
+      docsRepo: ${{ env.REPO }}
+    secrets:
+      githubToken: ${{ secrets.OSS_GITHUB_TOKEN }}
 
   publish:
     needs: [ context, build, analysis ]
