@@ -6,7 +6,6 @@ Correct some variables:
 
 - [gradle.properties](./gradle.properties): 
   - `githubRepo`
-  - `baseName`
   - `description`
   - `systemProp.sonar.projectKey`
   
@@ -14,11 +13,11 @@ Correct some variables:
 
 - [settings.gradle.kts](./settings.gradle.kts#16)
   - `rootProject.name`
+  - `projectName`
   - Update subprojects structure
 
 - [build.yml](.github/workflows/build.yml)
-  - `REPO`
-  - `PROFILE`
+  - Replace `${{ env.PROFILE }}` to `projectName`
 
 - Add GitHub repository secrets for action
   - `CI_GPG_PASSPHARSE`

@@ -20,10 +20,6 @@ on:
       - 'LICENSE'
       - 'webdocs/**'
 
-env:
-  REPO: 'zero88/java-gradle-template'
-  PROFILE: 'code'
-
 jobs:
   context:
     uses: zero88/shared-ghactions/.github/workflows/project-context.yml@main
@@ -35,9 +31,9 @@ jobs:
       gpgPassphrase: ${{ secrets.CI_GPG_PASSPHARSE }}
 
   build:
+    uses: zero88/shared-ghactions/.github/workflows/gradle-build.yml@main
     needs: context
     if: needs.context.outputs.shouldBuild == 'true'
-    uses: zero88/shared-ghactions/.github/workflows/gradle-build.yml@main
     with:
       profile: 'ciBuild'
       version: ${{ needs.context.outputs.version }}
@@ -45,9 +41,9 @@ jobs:
       hashVersion: ${{ needs.context.outputs.commitId }}
 
   analysis:
+    uses: zero88/shared-ghactions/.github/workflows/gradle-analysis.yml@main
     needs: [ context, build ]
     if: needs.context.outputs.shouldBuild == 'true'
-    uses: zero88/shared-ghactions/.github/workflows/gradle-analysis.yml@main
     with:
       profile: 'ciSonar'
       semanticVersion: ${{ needs.context.outputs.semanticVersion }}
@@ -57,10 +53,9 @@ jobs:
       sonarToken: ${{ secrets.OSS_SONARQUBE_TOKEN }}
 
   docs:
-    runs-on: ubuntu-latest
-    needs: [ context, build ]
-    if: needs.context.outputs.shouldPublish == 'true' || needs.context.outputs.isRelease == 'true'
     uses: zero88/shared-ghactions/.github/workflows/antora-docs-async.yml@main
+    needs: [ context, build ]
+    if: needs.context.outputs.shouldPublish == 'disabled' || needs.context.outputs.isRelease == 'disabled'
     with:
       profile: ${{ env.PROFILE }}
       version: ${{ needs.context.outputs.version }}
@@ -68,14 +63,13 @@ jobs:
       hashVersion: ${{ needs.context.outputs.commitId }}
       sha: ${{ needs.context.outputs.sha }}
       isRelease: ${{ needs.context.outputs.isRelease }}
-      docsRepo: ${{ env.REPO }}
     secrets:
       githubToken: ${{ secrets.OSS_GITHUB_TOKEN }}
 
   publish:
+    uses: zero88/shared-ghactions/.github/workflows/gradle-publish.yml@main
     needs: [ context, build, analysis ]
     if: needs.context.outputs.shouldPublish == 'true' || needs.context.outputs.isRelease == 'true'
-    uses: zero88/shared-ghactions/.github/workflows/gradle-publish.yml@main
     with:
       profile: ${{ env.PROFILE }}
       version: ${{ needs.context.outputs.version }}

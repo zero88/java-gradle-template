@@ -7,6 +7,7 @@ plugins {
     id(PluginLibs.nexusPublish) version PluginLibs.Version.nexusPublish
 }
 
+project.ext.set("baseName", (gradle as ExtensionAware).extensions["BASE_NAME"] as String)
 val pRepo = project.ext.get("githubRepo") as String
 val pGroup = project.ext.get("projectGroup") as String
 

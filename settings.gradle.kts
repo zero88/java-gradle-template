@@ -13,11 +13,12 @@ pluginManagement {
     }
 }
 
-rootProject.name = "template"
+rootProject.name = "template-parent"
+val projectName = "template"
 val profile: String by settings
 var pp: Array<String> = arrayOf()
 val pools = mutableMapOf(
-    "code" to arrayOf(":api"),
+    projectName to arrayOf(":api"),
     "sample" to emptyArray(),
     "integtest" to emptyArray()
 )
@@ -26,7 +27,7 @@ val excludeCISonar = docs
 val excludeCIBuild = pools["sample"]!! + pools["integtest"]!! + excludeCISonar
 pools.putAll(
     mapOf(
-        "docs" to pools["code"]!!.plus(docs)
+        "docs" to pools[projectName]!!.plus(docs)
     )
 )
 
@@ -43,6 +44,7 @@ pp.forEach { include(it) }
 
 if (gradle is ExtensionAware) {
     val extensions = (gradle as ExtensionAware).extensions
+    extensions.add("BASE_NAME", projectName)
     extensions.add("PROJECT_POOL", pools.toMap())
     extensions.add("SKIP_PUBLISH", excludeCIBuild + arrayOf(":docs", ":sample", ":integtest"))
 }
