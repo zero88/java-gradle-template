@@ -4,9 +4,12 @@ Gradle template for opensource java projects
 
 Correct some variables:
 
-- [gradle.properties](./gradle.properties): 
-  - `githubRepo`
+- [gradle.properties](./gradle.properties):
+  - `projectGroup`
+  - `projectLicense`
   - `description`
+  - `github.repo`
+  - `systemProp.sonar.organization`
   - `systemProp.sonar.projectKey`
   
   For organization repo: `projectGroup` and `systemProp.sonar.organization`
@@ -16,7 +19,7 @@ Correct some variables:
   - `projectName`
   - Update subprojects structure
 
-- [build.yml](.github/workflows/build.yml)
+- [build.yml](.github/workflows/ci.yml)
   - Replace `${{ env.PROFILE }}` to `projectName`
 
 - Add GitHub repository secrets for action

@@ -1,15 +1,18 @@
 plugins {
     eclipse
     idea
-    id(ZeroLibs.Plugins.oss) version ZeroLibs.Version.gradlePlugin
-    id(ZeroLibs.Plugins.root) version ZeroLibs.Version.gradlePlugin
-
-    id(PluginLibs.nexusPublish) version PluginLibs.Version.nexusPublish
+    id(PlayioPlugin.oss) version PlayioPlugin.Version.gradlePlugin
+    id(PlayioPlugin.root) version PlayioPlugin.Version.gradlePlugin
+    id(PlayioPlugin.antora) version PlayioPlugin.Version.gradlePlugin apply false
+    id(PlayioPlugin.pandoc) version PlayioPlugin.Version.gradlePlugin apply false
+    id(PlayioPlugin.codegen) version PlayioPlugin.Version.gradlePlugin apply false
+    id(PlayioPlugin.docgen) version PlayioPlugin.Version.gradlePlugin apply false
 }
 
 project.ext.set("baseName", (gradle as ExtensionAware).extensions["BASE_NAME"] as String)
-val pRepo = project.ext.get("githubRepo") as String
+val pRepo = project.ext.get("github.repo") as String
 val pGroup = project.ext.get("projectGroup") as String
+val pLicense = project.ext.get("projectLicense") as String
 
 allprojects {
     group = pGroup
@@ -33,10 +36,9 @@ allprojects {
 }
 
 subprojects {
-    apply(plugin = ZeroLibs.Plugins.oss)
+    apply(plugin = PlayioPlugin.oss)
 
     dependencies {
-
         testImplementation(TestLibs.junit5Api)
         testImplementation(TestLibs.junit5Engine)
         testImplementation(TestLibs.junit5Vintage)
@@ -44,32 +46,12 @@ subprojects {
 
     oss {
         zero88.set(true)
-        publishingInfo {
-            enabled.set(true)
-            homepage.set("https://github.com/${pRepo}")
-            license {
-                name.set("The Apache License, Version 2.0")
-                url.set("https://github.com/${pRepo}/blob/master/LICENSE")
-            }
-            scm {
-                connection.set("scm:git:git://git@github.com:${pRepo}.git")
-                developerConnection.set("scm:git:ssh://git@github.com:${pRepo}.git")
-                url.set("https://github.com/${pRepo}")
-            }
+        github.set(true)
+        publishing {
+            homepage.set("<some_where>")
         }
         testLogger {
             slowThreshold = 5000
-        }
-    }
-}
-
-
-nexusPublishing {
-    packageGroup.set(pGroup)
-    repositories {
-        sonatype {
-            username.set(project.property("nexus.username") as String?)
-            password.set(project.property("nexus.password") as String?)
         }
     }
 }

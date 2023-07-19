@@ -1,13 +1,18 @@
 private fun Map<Int, List<Int>>.ver(minor: Int, patch: Int):String = "${minor}.${this[minor]?.get(patch)}"
 
-object PluginLibs {
+object PlayioPlugin {
 
     object Version {
 
-        const val nexusPublish = "1.1.0"
+        const val gradlePlugin = "0.2.0"
     }
 
-    const val nexusPublish = "io.github.gradle-nexus.publish-plugin"
+    const val oss = "cloud.playio.gradle.oss"
+    const val root = "cloud.playio.gradle.root"
+    const val antora = "cloud.playio.gradle.antora"
+    const val pandoc = "cloud.playio.gradle.pandoc"
+    const val docgen = "cloud.playio.gradle.docgen"
+    const val codegen = "cloud.playio.gradle.codegen"
 }
 
 object JacksonLibs {
@@ -44,29 +49,8 @@ object VertxLibs {
         @JvmField val vertxCore = "4.${pool.ver(3, 5)}"
         @JvmField val vertxSQL = "4.${pool.ver(3, 5)}"
         const val vertxJunit = "4.2.5"
-        const val docgen = "0.9.4"
     }
 
     @JvmField val core = "io.vertx:vertx-core:${Version.vertxCore}"
-    @JvmField val codegen = "io.vertx:vertx-codegen:${Version.vertxCore}"
     @JvmField val junit5 = "io.vertx:vertx-junit5:${Version.vertxJunit}"
-    const val docgen = "io.vertx:vertx-docgen:${Version.docgen}"
-}
-
-object ZeroLibs {
-    object Version {
-
-        const val gradlePlugin = "2.1.0"
-        const val utils = "2.0.0"
-        const val rsql = "2.2.1"
-    }
-
-    const val rsql = "io.github.zero88:rsql-parser:${Version.rsql}"
-    const val utils = "io.github.zero88:java-utils:${Version.utils}"
-
-    object Plugins {
-
-        const val oss = "io.github.zero88.gradle.oss"
-        const val root = "io.github.zero88.gradle.root"
-    }
 }
