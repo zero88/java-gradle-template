@@ -30,3 +30,7 @@ Correct some variables:
   - `OSS_SONARQUBE_TOKEN`
   - `OSS_SONATYPE_PASSWORD`
   - `OSS_SONATYPE_USER`
+
+- Git branches:
+  - `docs/main`: To keep Antora component documentation
+  - `gh-pages`: To keep Antora webdocs and host GitHub page
