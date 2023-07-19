@@ -24,6 +24,9 @@ on:
       - '*.md'
       - 'LICENSE'
 
+env:
+  PROFILE: all
+
 jobs:
   context:
     uses: zero88/shared-ghactions/.github/workflows/project-context.yml@main

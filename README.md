@@ -5,12 +5,13 @@ Gradle template for opensource java projects
 Correct some variables:
 
 - [gradle.properties](./gradle.properties):
+  - `title=<title>`
+  - `description=<description>` 
   - `projectGroup`
   - `projectLicense`
-  - `description`
   - `github.repo`
-  - `systemProp.sonar.organization`
-  - `systemProp.sonar.projectKey`
+  - `systemProp.sonar.organization=<sonar-org-key>`
+  - `systemProp.sonar.projectKey=<sonar-project-key>`
   
   For organization repo: `projectGroup` and `systemProp.sonar.organization`
 
@@ -19,8 +20,8 @@ Correct some variables:
   - `projectName`
   - Update subprojects structure
 
-- [build.yml](.github/workflows/ci.yml)
-  - Replace `${{ env.PROFILE }}` to `projectName`
+- [ci.yml](.github/workflows/ci.yml)
+  - Update `${{ env.PROFILE }}` to `projectName`
 
 - Add GitHub repository secrets for action
   - `CI_GPG_PASSPHARSE`
