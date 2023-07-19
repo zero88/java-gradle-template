@@ -21,7 +21,7 @@ Correct some variables:
   - Update subprojects structure
 
 - [ci.yml](.github/workflows/ci.yml)
-  - Update `${{ env.PROFILE }}` to `projectName`
+  - Replace `profile: 'template'` to `profile: '<your_project_name>'`
 
 - Add GitHub repository secrets for action
   - `CI_GPG_PASSPHARSE`
