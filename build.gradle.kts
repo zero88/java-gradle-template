@@ -10,12 +10,9 @@ plugins {
 }
 
 project.ext.set("baseName", (gradle as ExtensionAware).extensions["BASE_NAME"] as String)
-val pRepo = project.ext.get("github.repo") as String
-val pGroup = project.ext.get("projectGroup") as String
-val pLicense = project.ext.get("projectLicense") as String
 
 allprojects {
-    group = pGroup
+    group = project.ext.get("projectGroup") as String
 
     repositories {
         mavenLocal()

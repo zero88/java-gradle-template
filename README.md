@@ -20,8 +20,11 @@ Correct some variables:
   - `projectName`
   - Update subprojects structure
 
+- [project(":docs")](./docs/build.gradle.kts#16)
+  - Change `val mainProject = "template"`
+
 - [ci.yml](.github/workflows/ci.yml)
-  - Replace `profile: 'template'` to `profile: '<your_project_name>'`
+  - Replace env `MAIN_PROFILE: 'template'` to `MAIN_PROFILE: '<your_project_main_profile>'` (must not have blank)
 
 - Add GitHub repository secrets for action
   - `CI_GPG_PASSPHARSE`

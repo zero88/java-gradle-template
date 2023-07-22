@@ -11,12 +11,19 @@ dependencies {
 }
 
 documentation {
+    val mainProject = "template"
     antora {
-        asciiAttributes.set(mapOf("rsql-version" to project.version))
-        javadocTitle.set("jOOQ RSQL ${project.version} API")
+        asciiAttributes.set(
+            mapOf(
+                "project-group" to project.group,
+                "project-name" to mainProject,
+                "project-version" to project.version
+            )
+        )
+        javadocTitle.set("Template ${project.version} API")
         javadocProjects.set(
             when (gradle) {
-                is ExtensionAware -> ((gradle as ExtensionAware).extensions["PROJECT_POOL"] as Map<*, Array<String>>)["template"]!!
+                is ExtensionAware -> ((gradle as ExtensionAware).extensions["PROJECT_POOL"] as Map<*, Array<String>>)[mainProject]!!
                 else              -> emptyArray()
             }.map(project::project)
         )
