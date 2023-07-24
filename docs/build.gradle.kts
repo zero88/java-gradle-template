@@ -11,7 +11,8 @@ dependencies {
 }
 
 documentation {
-    val mainProject = "template"
+    val extensions = (gradle as ExtensionAware).extensions
+    val mainProject = extensions["BASE_NAME"] as String
     antora {
         asciiAttributes.set(
             mapOf(
@@ -20,13 +21,8 @@ documentation {
                 "project-version" to project.version
             )
         )
-        javadocTitle.set("Template ${project.version} API")
-        javadocProjects.set(
-            when (gradle) {
-                is ExtensionAware -> ((gradle as ExtensionAware).extensions["PROJECT_POOL"] as Map<*, Array<String>>)[mainProject]!!
-                else              -> emptyArray()
-            }.map(project::project)
-        )
+        javadocTitle.set("${project.ext["title"]} ${project.version} API")
+        javadocProjects.set((extensions["PROJECT_POOL"] as Map<*, Array<String>>)[mainProject]!!.map(project::project))
     }
 }
 

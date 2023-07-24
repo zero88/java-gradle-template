@@ -1,0 +1,52 @@
+= java-gradle-template
+zero88
+:repo: zero88/java-gradle-template
+:artifact: io.github.zero88/java-gradle-template
+:sonarKey: zero88_java-gradle-template
+
+image:https://github.com/{repo}/actions/workflows/ci.yml/badge.svg[{repo},link=https://github.com/{repo}/actions/workflows/ci.yml]
+image:https://img.shields.io/github/v/release/{repo}?sort=semver[GitHub release (latest SemVer)]
+image:https://img.shields.io/nexus/r/{artifact}?server=https%3A%2F%2Foss.sonatype.org[Sonatype Nexus (Releases)]
+image:https://img.shields.io/nexus/s/{artifact}?server=https%3A%2F%2Foss.sonatype.org[Sonatype Nexus (Snapshots)]
+
+image:https://sonarcloud.io/api/project_badges/measure?project={sonarKey}&metric=ncloc[Lines of Code,link=https://sonarcloud.io/dashboard?id={sonarKey}]
+image:https://sonarcloud.io/api/project_badges/measure?project={sonarKey}&metric=coverage[Coverage,link=https://sonarcloud.io/dashboard?id={sonarKey}]
+image:https://sonarcloud.io/api/project_badges/measure?project={sonarKey}&metric=sqale_rating[Maintainability Rating,link=https://sonarcloud.io/dashboard?id={sonarKey}]
+image:https://sonarcloud.io/api/project_badges/measure?project={sonarKey}&metric=reliability_rating[Reliability Rating,link=https://sonarcloud.io/dashboard?id={sonarKey}]
+image:https://sonarcloud.io/api/project_badges/measure?project={sonarKey}&metric=security_rating[Security Rating,link=https://sonarcloud.io/dashboard?id={sonarKey}]
+image:https://sonarcloud.io/api/project_badges/measure?project={sonarKey}&metric=alert_status[Quality Gate Status,link=https://sonarcloud.io/dashboard?id={sonarKey}]
+
+Gradle template for opensource java projects
+
+Please, correct some variables:
+
+* link:./gradle.properties[gradle.properties]:
+** `title=&lt;title&gt;`
+** `description=&lt;description&gt;`
+** `projectGroup`
+** `projectLicense`
+** `github.repo`
+** `systemProp.sonar.organization=&lt;sonar-org-key&gt;`
+** `systemProp.sonar.projectKey=&lt;sonar-project-key&gt;`
+
+* link:./settings.gradle.kts#16[settings.gradle.kts]
+** `projectName`
+** Update subprojects structure
+
+* link:./docs/build.gradle.kts#16[project(":docs")]
+** Might update `val mainProject = extensions[&quot;BASE_NAME&quot;] as String`
+
+* link:.github/workflows/ci.yml[ci.yml]
+** Replace env `MAIN_PROFILE: &#39;template&#39;` to `MAIN_PROFILE: &#39;&lt;your_project_main_profile&gt;&#39;` (must not have blank)
+
+* Add GitHub repository secrets for action
+** `CI_GPG_PASSPHARSE`
+** `CI_GPG_PRIVATE_KEY`
+** `OSS_GITHUB_TOKEN`
+** `OSS_SONARQUBE_TOKEN`
+** `OSS_SONATYPE_PASSWORD`
+** `OSS_SONATYPE_USER`
+
+* Git branches:
+** `docs/main`: To keep Antora component documentation.
+** In case of host GitHub pages independent, create `gh-pages` and use https://github.com/zero88/shared-ghactions/blob/8ad1eb3773917b59db5d4cfba268ae17ec6121f4/.github/workflows/webdocs-standalone-publish.yml[shared-ghactions/.github/workflows/webdocs-standalone-publish.yml] in link:./.github/workflows/ci.yml[`ci.yml`].

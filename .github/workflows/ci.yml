@@ -75,6 +75,21 @@ jobs:
     secrets:
       githubToken: ${{ secrets.OSS_GITHUB_TOKEN }}
 
+#  webdocs:
+#    uses: zero88/shared-ghactions/.github/workflows/webdocs-standalone-publish.yml@main
+#    needs: [ context, docs ]
+#    if: needs.context.outputs.shouldPublish == 'true'
+#    with:
+#      profile: 'template'
+#      webdocsRepo: 'zero88/jooqx-webdocs'
+#      webdocsRef: 'main'
+#      webdocsWorkflow: 'webdocs.yml'
+#      docCommitMsg: ${{ needs.context.outputs.docCommitMsg }}
+#    secrets:
+#      githubToken: ${{ secrets.OSS_GITHUB_TOKEN }}
+#      gpgKey: ${{ secrets.CI_GPG_PRIVATE_KEY }}
+#      gpgPassphrase: ${{ secrets.CI_GPG_PASSPHARSE }}
+
   test:
     uses: zero88/shared-ghactions/.github/workflows/gradle-analysis.yml@main
     needs: [ context, build ]
